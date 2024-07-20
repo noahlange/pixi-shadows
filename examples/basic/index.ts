@@ -1,11 +1,9 @@
 import { AppLoaderPlugin, Shadow } from 'pixi-shadows';
-import { Application, Container, InteractionEvent, SCALE_MODES, Sprite, Texture } from 'pixi.js';
+import { Application, Container, SCALE_MODES, Sprite, Texture } from 'pixi.js';
 
 import backgroundUrl from '../../assets/background.jpg';
 import flameDemonUrl from '../../assets/flameDemon.png';
 
-// Initialise the shadows plugin
-Application.registerPlugin(AppLoaderPlugin);
 /* The actual demo code: */
 
 // Create your application
@@ -14,7 +12,9 @@ const height = 500;
 const app = new Application({ width, height, autoStart: true });
 
 document.body.appendChild(app.view);
-// AppLoaderPlugin.init.apply(app);
+
+// Initialise the shadows plugin
+AppLoaderPlugin.init.call(app, {});
 
 // Create a world container
 const world = app.shadows.container;
@@ -80,14 +80,14 @@ world.addChild(demon3);
 
 // Make the light track your mouse
 world.interactive = true;
-world.on('mousemove', (event: InteractionEvent) => {
-    shadow.position.copyFrom(event.data.global);
+world.on('mousemove', (event) => {
+    shadow.position.copyFrom(event);
 });
 
 // Create a light point on click
-world.on('pointerdown', (event: InteractionEvent) => {
+world.on('pointerdown', (event) => {
     const shadow2 = new Shadow(700, 0.7);
 
-    shadow2.position.copyFrom(event.data.global);
+    shadow2.position.copyFrom(event);
     world.addChild(shadow2);
 });

@@ -2,15 +2,12 @@ import * as PIXI from 'pixi.js';
 
 import { AmbientLight, DirectionalLight, PointLight, diffuseGroup, lightGroup, normalGroup } from 'pixi-lights';
 import { AppLoaderPlugin, Shadow } from 'pixi-shadows';
-import { Application, Container, InteractionEvent, Texture } from 'pixi.js';
+import { Container, Texture } from 'pixi.js';
 
 import backgroundNormalMapUrl from '../../assets/backgroundNormalMap.jpg';
 import backgroundUrl from '../../assets/background.jpg';
 import cutBlockNormalMapUrl from '../../assets/cutBlockNormalMap.png';
 import cutBlockUrl from '../../assets/cutBlock.png';
-
-// Initialise the shadows plugin
-Application.registerPlugin(AppLoaderPlugin);
 
 /* The actual demo code: */
 
@@ -18,6 +15,9 @@ Application.registerPlugin(AppLoaderPlugin);
 const width = 800;
 const height = 500;
 const app = new PIXI.Application({ width, height, fov: { pixiLights: { diffuseGroup, lightGroup, normalGroup } } });
+
+// Initialise the shadows plugin
+AppLoaderPlugin.init.call(app, {});
 
 document.body.appendChild(app.view);
 
@@ -104,14 +104,14 @@ world.addChild(block3);
 
 // Make the light track your mouse
 world.interactive = true;
-world.on('mousemove', (event: InteractionEvent) => {
-    light.position.copyFrom(event.data.global);
+world.on('mousemove', (event) => {
+    light.position.copyFrom(event);
 });
 
 // Create a light point on click
-world.on('pointerdown', (event: InteractionEvent) => {
+world.on('pointerdown', (event) => {
     const light2 = createLight(450, 2, 0xffffff);
 
-    light2.position.copyFrom(event.data.global);
+    light2.position.copyFrom(event);
     world.addChild(light2);
 });
